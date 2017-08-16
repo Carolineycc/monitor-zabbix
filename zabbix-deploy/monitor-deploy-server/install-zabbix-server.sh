@@ -49,7 +49,9 @@ yum clean all 1>/dev/null 2>1&
 echo $GREEN yum repos configuration done $NO_COLOR
 }
 
-yum_repos
+#yum_repos
+rpm -ivh http://repo.zabbix.com/zabbix/3.2/rhel/7/x86_64/zabbix-release-3.2-1.el7.noarch.rpm
+echo $GREEN zabbix repos settting done $NO_COLOR
 #------------------execute the install script --------
 source ./bin/install.sh 
 source ./bin/firewall.sh

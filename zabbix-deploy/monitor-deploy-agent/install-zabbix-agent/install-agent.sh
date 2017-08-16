@@ -70,10 +70,32 @@ sed -i '294 i  UserParameter=openstack.serviceexist[*],/etc/zabbix/scripts/servi
 if [ $METADATA = controller ];then
     cp  /home/admin-openrc  /etc/zabbix/scripts
     cp ./script/controller/check-process-status-openstack.sh  /etc/zabbix/scripts
+	cp ./script/controller/thread.sh  /etc/zabbix/scripts                                   
+	cp ./script/controller/top.sh  /etc/zabbix/scripts                                   
+	cp ./script/controller/processexist.sh  /etc/zabbix/scripts             
     sed -i '295 i UserParameter=check-process-status-openstack[*],/etc/zabbix/scripts/check-process-status-openstack.sh $1 ' /etc/zabbix/zabbix_agentd.conf
+    sed -i '296 i UserParameter=system.cpu.highload[*], /etc/zabbix/scripts/thread.sh $1 '  /etc/zabbix/zabbix_agentd.conf
+    sed -i '297 i  UserParameter=system.cpu.top, /etc/zabbix/scripts/top.sh '  /etc/zabbix/zabbix_agentd.conf
+    sed -i '298 i  UserParameter=system.cpu.processexist[*], /etc/zabbix/scripts/processexist.sh $1 $2 $3 ' /etc/zabbix/zabbix_agentd.conf
 else 
     continue 
 fi 
+
+#--------------For openstack computer item ---------
+if [ $METADATA = compute ];then
+	
+	cp ./script/controller/thread.sh  /etc/zabbix/scripts
+	cp ./script/controller/top.sh  /etc/zabbix/scripts
+	cp ./script/controller/processexist.sh  /etc/zabbix/scripts
+	cp ./script/controller/memory.sh  /etc/zabbix/scripts
+	sed -i '295 i  UserParameter=system.cpu.highload[*], /etc/zabbix/scripts/thread.sh $1 ' /etc/zabbix/zabbix_agentd.conf
+        sed -i '296 i  UserParameter=system.cpu.top, /etc/zabbix/scripts/top.sh '  /etc/zabbix/zabbix_agentd.conf
+	sed -i '297 i  UserParameter=system.cpu.processexist[*], /etc/zabbix/scripts/processexist.sh $1 $2 $3 ' /etc/zabbix/zabbix_agentd.conf
+	sed -i '298 i  UserParameter=vm_monitor[*], /etc/zabbix/scripts/processexist.sh $1 $2 $3 ' /etc/zabbix/zabbix_agentd.conf
+	sed -i '299 i  UserParameter=check-single-process-memory[*], /etc/zabbix/scripts/memory.sh $1 ' /etc/zabbix/zabbix_agentd.conf
+else
+	continue
+fi
 
 #--------------add ceph support -------------------------
 if [ $METADATA = ceph ];then
