@@ -84,7 +84,7 @@ cat ./HOSTs/$METADATA | while read line ; do ssh -n $line /bin/bash /root/instal
 $SERVERIP $METADATA ;debug $? ;done  2>/dev/null
 
 cat ./HOSTs/$METADATA | while read line ; do ssh -n $line  'rm -rf /root/install-zabbix-agent/' ;done 
-echo $GREEN Finished install zabbix agent on host: $YELLOW  $(cat ./$METADATA) $NO_COLOR
+echo $GREEN Finished install zabbix agent on host: $YELLOW  $(cat ./HOSTs/$METADATA) $NO_COLOR
 }
 
 
@@ -99,7 +99,7 @@ cat ./HOSTs/$METADATA | while read line ; do ssh -n $line /bin/bash /root/instal
 $SERVERIP $METADATA ;debug $? ;done  2>/dev/null
  
 cat ./HOSTs/$METADATA | while read line ; do ssh -n $line 'rm -rf /root/install-zabbix-agent/';done 
-echo $GREEN Finished install zabbix agent on host: $YELLOW  $(cat ./$METADATA) $NO_COLOR
+echo $GREEN Finished install zabbix agent on host: $YELLOW  $(cat ./HOSTs/$METADATA) $NO_COLOR
 }
 
 function agent(){
@@ -112,7 +112,7 @@ cat ./HOSTs/$METADATA | while read line ; do ssh -n $line /bin/bash /root/instal
 $SERVERIP $METADATA ;debug $? ;done  2>/dev/null
 
 cat ./HOSTs/$METADATA | while read line ; do ssh -n $line 'rm -rf /root/install-zabbix-agent/';done
-echo $GREEN Finished install zabbix agent on host: $YELLOW  $(cat ./$METADATA) $NO_COLOR
+echo $GREEN Finished install zabbix agent on host: $YELLOW  $(cat ./HOSTs/$METADATA) $NO_COLOR
 }
 
 function ceph(){
@@ -125,7 +125,7 @@ cat ./HOSTs/$METADATA | while read line ; do ssh -n $line /bin/bash /root/instal
 $SERVERIP $METADATA ;debug $? ;done  2>/dev/null
 
 cat ./HOSTs/$METADATA | while read line ; do ssh -n $line 'rm -rf /root/install-zabbix-agent/';done
-echo $GREEN Finished install zabbix agent on host: $YELLOW  $(cat ./$METADATA) $NO_COLOR
+echo $GREEN Finished install zabbix agent on host: $YELLOW  $(cat ./HOSTs/$METADATA) $NO_COLOR
 }
 
 
