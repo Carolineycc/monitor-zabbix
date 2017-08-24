@@ -28,9 +28,11 @@ $MAGENTA========================================================================
             $BLUE#To agent role host with zabbix-agent$NO_COLOR
          ${MAGENTA}sh $0 all  zabbix-server-ip
             $BLUE#To deploy all role host  with zabbix-agent${MAGENTA}
-         ${MAGENTA}sh $0 ssh-key-<target-hosts-role>
-            $BLUE#to create ssh-key and copy it to tartget hosts 
-            (target-hosts-role=controller,compute,agent)$NO_COLOR${MAGENTA}
+         ${MAGENTA}sh $0 ceph zabbix-server-ip
+		    $BLUE#To deploy ceph role host with zabbix-agent${MAGENTA}
+		 ${MAGENTA}sh $0 ssh-key-<target-hosts-role>
+            $BLUE#To create ssh-key and copy it to tartget hosts 
+        (target-hosts-role=controller,compute,agent)$NO_COLOR${MAGENTA}
 ===========================================================================$NO_COLOR
 __EOF__
 
@@ -49,22 +51,22 @@ echo $BLUE Generating public/private rsa key pair,skip all steps by type Enter: 
 ssh-keygen -t rsa -N "" -f /root/.ssh/id_rsa
 if [[ $1 = "compute" ]];then
     echo $BLUE copy public key to compute hosts:  $NO_COLOR
-    for ips in $(cat ./compute);
+    for ips in $(cat ./HOSTs/compute);
         do ssh-copy-id -i /root/.ssh/id_rsa.pub  $ips;
     done
 elif [[ $1 = "controller" ]];then
     echo $BLUE copy public key to controller hosts: $NO_COLOR
-    for ips in $(cat ./controller);
+    for ips in $(cat ./HOSTs/controller);
         do ssh-copy-id -i /root/.ssh/id_rsa.pub  $ips;
    done
 elif [[ $1 = "agent" ]];then
     echo $BLUE copy public key to network hosts:  $NO_COLOR
-    for ips in $(cat ./agent);
+    for ips in $(cat ./HOSTs/agent);
         do ssh-copy-id -i /root/.ssh/id_rsa.pub  $ips;
     done
 elif [[ $1 = "storage" ]];then
     echo $BLUE copy public key to storage hosts:  $NO_COLOR
-    for ips in $(cat ./storage);
+    for ips in $(cat ./HOSTs/ceph);
         do ssh-copy-id -i /root/.ssh/id_rsa.pub  $ips;
     done
 fi
@@ -76,12 +78,12 @@ function controller(){
 local METADATA
 METADATA=controller   #change this for your request 
 echo $BLUE Beginning install zabbix agent on $YELLOW $METADATA  $NO_COLOR
-cat ./$METADATA | while read line ; do scp -r install-zabbix-agent/ $line:/root/; debug $? ; done   1>/dev/null 2>&1 
+cat ./HOSTs/$METADATA | while read line ; do scp -r install-zabbix-agent/ $line:/root/; debug $? ; done   1>/dev/null 2>&1 
 
-cat ./$METADATA | while read line ; do ssh -n $line /bin/bash /root/install-zabbix-agent/install-agent.sh \
+cat ./HOSTs/$METADATA | while read line ; do ssh -n $line /bin/bash /root/install-zabbix-agent/install-agent.sh \
 $SERVERIP $METADATA ;debug $? ;done  2>/dev/null
 
-cat ./$METADATA | while read line ; do ssh -n $line  'rm -rf /root/install-zabbix-agent/' ;done 
+cat ./HOSTs/$METADATA | while read line ; do ssh -n $line  'rm -rf /root/install-zabbix-agent/' ;done 
 echo $GREEN Finished install zabbix agent on host: $YELLOW  $(cat ./$METADATA) $NO_COLOR
 }
 
@@ -91,12 +93,12 @@ function compute(){
 local METADATA
 METADATA=compute    #change this for your request
 echo $BLUE Beginning install zabbix agent on $YELLOW $METADATA  $NO_COLOR
-cat ./$METADATA | while read line ; do scp -r install-zabbix-agent/ $line:/root/; debug $? ; done  1>/dev/null 2>&1
+cat ./HOSTs/$METADATA | while read line ; do scp -r install-zabbix-agent/ $line:/root/; debug $? ; done  1>/dev/null 2>&1
     
-cat ./$METADATA | while read line ; do ssh -n $line /bin/bash /root/install-zabbix-agent/install-agent.sh \
+cat ./HOSTs/$METADATA | while read line ; do ssh -n $line /bin/bash /root/install-zabbix-agent/install-agent.sh \
 $SERVERIP $METADATA ;debug $? ;done  2>/dev/null
  
-cat ./$METADATA | while read line ; do ssh -n $line 'rm -rf /root/install-zabbix-agent/';done 
+cat ./HOSTs/$METADATA | while read line ; do ssh -n $line 'rm -rf /root/install-zabbix-agent/';done 
 echo $GREEN Finished install zabbix agent on host: $YELLOW  $(cat ./$METADATA) $NO_COLOR
 }
 
@@ -104,14 +106,31 @@ function agent(){
 local METADATA
 METADATA=agent   #change this for your request
 echo $BLUE Beginning install zabbix agent on $YELLOW $METADATA  $NO_COLOR
-cat ./$METADATA | while read line ; do scp -r install-zabbix-agent/ $line:/root/; debug $? ; done  1>/dev/null 2>&1
+cat ./HOSTs/$METADATA | while read line ; do scp -r install-zabbix-agent/ $line:/root/; debug $? ; done  1>/dev/null 2>&1
 
-cat ./$METADATA | while read line ; do ssh -n $line /bin/bash /root/install-zabbix-agent/install-agent.sh \
+cat ./HOSTs/$METADATA | while read line ; do ssh -n $line /bin/bash /root/install-zabbix-agent/install-agent.sh \
 $SERVERIP $METADATA ;debug $? ;done  2>/dev/null
 
-cat ./$METADATA | while read line ; do ssh -n $line 'rm -rf /root/install-zabbix-agent/';done
+cat ./HOSTs/$METADATA | while read line ; do ssh -n $line 'rm -rf /root/install-zabbix-agent/';done
 echo $GREEN Finished install zabbix agent on host: $YELLOW  $(cat ./$METADATA) $NO_COLOR
 }
+
+function ceph(){
+local METADATA
+METADATA=ceph  #change this for your request
+echo $BLUE Beginning install zabbix agent on $YELLOW $METADATA  $NO_COLOR
+cat ./HOSTs/$METADATA | while read line ; do scp -r install-zabbix-agent/ $line:/root/; debug $? ; done  1>/dev/null 2>&1
+
+cat ./HOSTs/$METADATA | while read line ; do ssh -n $line /bin/bash /root/install-zabbix-agent/install-agent.sh \
+$SERVERIP $METADATA ;debug $? ;done  2>/dev/null
+
+cat ./HOSTs/$METADATA | while read line ; do ssh -n $line 'rm -rf /root/install-zabbix-agent/';done
+echo $GREEN Finished install zabbix agent on host: $YELLOW  $(cat ./$METADATA) $NO_COLOR
+}
+
+
+
+
 
 
 #-------------------------------Main----------------------------
@@ -131,6 +150,9 @@ compute)
 agent)
     agent
     ;;
+ceph)
+    ceph
+	;;
 ssh-key-controller)
     ssh_key controller
     ;;

@@ -101,7 +101,24 @@ fi
 
 #--------------add ceph support -------------------------
 if [ $METADATA = ceph ];then
-    usermod -a -G ceph zabbix
+	usermod -a -G ceph zabbix
+	sed -i '296 i UserParameter=system.process.exist[*], /etc/zabbix/scripts/processexist.sh $1 $2 $3' /etc/zabbix/zabbix_agentd.conf
+    sed -i '297 i UserParameter=ceph.agent.json[*], /etc/zabbix/scripts/ceph-agent-json.py $1'  /etc/zabbix/zabbix_agentd.conf
+	sed -i '298 i UserParameter=ceph.disk.scan, /etc/zabbix/scripts/ceph_disk_scan.sh '  /etc/zabbix/zabbix_agentd.conf
+	sed -i '299 i UserParameter=ceph.disk.rrqm_s[*], iostat -dyx  |grep "\b$1\b"|awk '{print $$2}' ' /etc/zabbix/zabbix_agentd.conf
+    sed -i '300 i UserParameter=ceph.disk.wrqm_s[*], iostat -dyx  |grep "\b$1\b"|awk '{print $$3}' ' /etc/zabbix/zabbix_agentd.conf
+	sed -i '301 i UserParameter=ceph.disk.r_s[*], iostat -dyx  |grep "\b$1\b"|awk '{print $$4}'  '/etc/zabbix/zabbix_agentd.conf
+	sed -i '302 i UserParameter=ceph.disk.w_s[*], iostat -dyx  |grep "\b$1\b"|awk '{print $$5}'  ' /etc/zabbix/zabbix_agentd.conf
+	sed -i '303 i UserParameter=ceph.disk.rkB_s[*], iostat -dyx  |grep "\b$1\b"|awk '{print $$6}'  '   /etc/zabbix/zabbix_agentd.conf
+	sed -i '304 i UserParameter=ceph.disk.wkB_s[*], iostat -dyx  |grep "\b$1\b"|awk '{print $$7}'  '  /etc/zabbix/zabbix_agentd.conf
+	sed -i '305 i UserParameter=ceph.disk.avgrq-sz[*], iostat -dyx  |grep "\b$1\b"|awk '{print $$8}'   '   /etc/zabbix/zabbix_agentd.conf
+	sed -i '306 i UserParameter=ceph.disk.avgqu-sz[*], iostat -dyx  |grep "\b$1\b"|awk '{print $$9}'  '  /etc/zabbix/zabbix_agentd.conf
+	sed -i '307 i UserParameter=ceph.disk.await[*], iostat -dyx  |grep "\b$1\b"|awk '{print $$10}'  '   /etc/zabbix/zabbix_agentd.conf
+	sed -i '308 i UserParameter=ceph.disk.r_await[*], iostat -dyx  |grep "\b$1\b"|awk '{print $$11}'  '/etc/zabbix/zabbix_agentd.conf
+	sed -i '309 i UserParameter=ceph.disk.w_await[*], iostat -dyx  |grep "\b$1\b"|awk '{print $$12}'  ' /etc/zabbix/zabbix_agentd.conf
+	sed -i '310 i UserParameter=ceph.disk.svctm[*], iostat -dyx  |grep "\b$1\b"|awk '{print $$13}'  '  /etc/zabbix/zabbix_agentd.conf
+	sed -i '311 i UserParameter=ceph.disk.util[*], iostat -dyx  |grep "\b$1\b"|awk '{print $$14}'  '  /etc/zabbix/zabbix_agentd.conf
+	sed -i '312 i UserParameter=ceph.agent.test, /etc/zabbix/scripts/test.sh '  /etc/zabbix/zabbix_agentd.conf
 fi
 
 #--------------end install zabbix agent---------------------
