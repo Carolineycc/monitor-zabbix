@@ -29,8 +29,8 @@ $MAGENTA========================================================================
          ${MAGENTA}sh $0 all  zabbix-server-ip
             $BLUE#To deploy all role host  with zabbix-agent${MAGENTA}
          ${MAGENTA}sh $0 ceph zabbix-server-ip
-		    $BLUE#To deploy ceph role host with zabbix-agent${MAGENTA}
-		 ${MAGENTA}sh $0 ssh-key-<target-hosts-role>
+            $BLUE#To deploy ceph role host with zabbix-agent${MAGENTA}
+         ${MAGENTA}sh $0 ssh-key-<target-hosts-role>
             $BLUE#To create ssh-key and copy it to tartget hosts 
         (target-hosts-role=controller,compute,agent)$NO_COLOR${MAGENTA}
 ===========================================================================$NO_COLOR
