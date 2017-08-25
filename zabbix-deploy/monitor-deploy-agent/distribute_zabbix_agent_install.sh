@@ -78,12 +78,12 @@ function controller(){
 local METADATA
 METADATA=controller   #change this for your request 
 echo $BLUE Beginning install zabbix agent on $YELLOW $METADATA  $NO_COLOR
-cat ./HOSTs/$METADATA | while read line ; do scp -r install-zabbix-agent/ $line:/root/; debug $? ; done   1>/dev/null 2>&1 
+cat ./HOSTs/$METADATA | while read line ; do scp -r install-zabbix-agent/ root@$line:/root/; debug $? ; done   1>/dev/null 2>&1 
 
-cat ./HOSTs/$METADATA | while read line ; do ssh -n $line /bin/bash /root/install-zabbix-agent/install-agent.sh \
+cat ./HOSTs/$METADATA | while read line ; do ssh -n root@$line /bin/bash /root/install-zabbix-agent/install-agent.sh \
 $SERVERIP $METADATA ;debug $? ;done  2>/dev/null
 
-cat ./HOSTs/$METADATA | while read line ; do ssh -n $line  'rm -rf /root/install-zabbix-agent/' ;done 
+cat ./HOSTs/$METADATA | while read line ; do ssh -n root@$line  'rm -rf /root/install-zabbix-agent/' ;done 
 echo $GREEN Finished install zabbix agent on host: $YELLOW  $(cat ./HOSTs/$METADATA) $NO_COLOR
 }
 
@@ -93,12 +93,12 @@ function compute(){
 local METADATA
 METADATA=compute    #change this for your request
 echo $BLUE Beginning install zabbix agent on $YELLOW $METADATA  $NO_COLOR
-cat ./HOSTs/$METADATA | while read line ; do scp -r install-zabbix-agent/ $line:/root/; debug $? ; done  1>/dev/null 2>&1
+cat ./HOSTs/$METADATA | while read line ; do scp -r install-zabbix-agent/ root@$line:/root/; debug $? ; done  1>/dev/null 2>&1
     
-cat ./HOSTs/$METADATA | while read line ; do ssh -n $line /bin/bash /root/install-zabbix-agent/install-agent.sh \
+cat ./HOSTs/$METADATA | while read line ; do ssh -n root@$line /bin/bash /root/install-zabbix-agent/install-agent.sh \
 $SERVERIP $METADATA ;debug $? ;done  2>/dev/null
  
-cat ./HOSTs/$METADATA | while read line ; do ssh -n $line 'rm -rf /root/install-zabbix-agent/';done 
+cat ./HOSTs/$METADATA | while read line ; do ssh -n root@$line 'rm -rf /root/install-zabbix-agent/';done 
 echo $GREEN Finished install zabbix agent on host: $YELLOW  $(cat ./HOSTs/$METADATA) $NO_COLOR
 }
 
@@ -106,12 +106,12 @@ function agent(){
 local METADATA
 METADATA=agent   #change this for your request
 echo $BLUE Beginning install zabbix agent on $YELLOW $METADATA  $NO_COLOR
-cat ./HOSTs/$METADATA | while read line ; do scp -r install-zabbix-agent/ $line:/root/; debug $? ; done  1>/dev/null 2>&1
+cat ./HOSTs/$METADATA | while read line ; do scp -r install-zabbix-agent/ root@$line:/root/; debug $? ; done  1>/dev/null 2>&1
 
-cat ./HOSTs/$METADATA | while read line ; do ssh -n $line /bin/bash /root/install-zabbix-agent/install-agent.sh \
+cat ./HOSTs/$METADATA | while read line ; do ssh -n root@$line /bin/bash /root/install-zabbix-agent/install-agent.sh \
 $SERVERIP $METADATA ;debug $? ;done  2>/dev/null
 
-cat ./HOSTs/$METADATA | while read line ; do ssh -n $line 'rm -rf /root/install-zabbix-agent/';done
+cat ./HOSTs/$METADATA | while read line ; do ssh -n root@$line 'rm -rf /root/install-zabbix-agent/';done
 echo $GREEN Finished install zabbix agent on host: $YELLOW  $(cat ./HOSTs/$METADATA) $NO_COLOR
 }
 
@@ -119,12 +119,12 @@ function ceph(){
 local METADATA
 METADATA=ceph  #change this for your request
 echo $BLUE Beginning install zabbix agent on $YELLOW $METADATA  $NO_COLOR
-cat ./HOSTs/$METADATA | while read line ; do scp -r install-zabbix-agent/ $line:/root/; debug $? ; done  1>/dev/null 2>&1
+cat ./HOSTs/$METADATA | while read line ; do scp -r install-zabbix-agent/ root@$line:/root/; debug $? ; done  1>/dev/null 2>&1
 
-cat ./HOSTs/$METADATA | while read line ; do ssh -n $line /bin/bash /root/install-zabbix-agent/install-agent.sh \
+cat ./HOSTs/$METADATA | while read line ; do ssh -n root@$line /bin/bash /root/install-zabbix-agent/install-agent.sh \
 $SERVERIP $METADATA ;debug $? ;done  2>/dev/null
 
-cat ./HOSTs/$METADATA | while read line ; do ssh -n $line 'rm -rf /root/install-zabbix-agent/';done
+cat ./HOSTs/$METADATA | while read line ; do ssh -n root@$line 'rm -rf /root/install-zabbix-agent/';done
 echo $GREEN Finished install zabbix agent on host: $YELLOW  $(cat ./HOSTs/$METADATA) $NO_COLOR
 }
 
