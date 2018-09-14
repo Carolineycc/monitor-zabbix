@@ -1,5 +1,5 @@
 #!/bin/sh
-#author by keanlee on 13th Oct of 2016
+#author by Caroline on 13th Oct of 2017
 #wget -r -p -np -k -P ./ http://110.76.187.145/repos/
 # ansi colors for formatting heredoc
 ESC=$(printf "\e")
