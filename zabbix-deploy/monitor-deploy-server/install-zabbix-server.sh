@@ -1,6 +1,6 @@
 #!/bin/sh
 #author by Caroline on 13th Oct of 2017
-#wget -r -p -np -k -P ./ http://110.76.187.145/repos/
+#wget -r -p -np -k -P ./ http://ip/repos/
 # ansi colors for formatting heredoc
 ESC=$(printf "\e")
 GREEN="$ESC[0;32m"
